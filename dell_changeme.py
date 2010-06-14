@@ -12,7 +12,7 @@ DESCRIPTION
     A Munin plugin to graph the fan speeds and chassis temperatures of Dell
     hardware. Requires Dell's OpenManage software, specifically omreport. OMSA
     services must be started prior to plugins use. Script expects omreport to
-    be in /usr/sbin/, you may need to add a symlink.
+    be in /usr/bin/, you may need to add a symlink.
 
     omreport accesses the proc filesystem and as such this plugin must be ran
     as root. Alternatively, you could modify script to use sudoers, or setuid.
@@ -112,10 +112,10 @@ class ChassisTemps(Statistics):
 if __name__ == '__main__':
     try:
         if "fans" in sys.argv[0]:
-            cmd = "/usr/sbin/omreport chassis fans"
+            cmd = "/usr/bin/omreport chassis fans"
             omdata = FanSpeed(cmd)
         elif "temps" in sys.argv[0]:
-            cmd = "/usr/sbin/omreport chassis temps"
+            cmd = "/usr/bin/omreport chassis temps"
             omdata = ChassisTemps(cmd)
         else:
             print >> sys.stderr, "Change filename to dell_fans or dell_temps."
