@@ -140,7 +140,7 @@ if __name__ == '__main__':
             cmd = "/usr/bin/omreport chassis pwrmonitoring"
             omdata = PowerConsumption(cmd)
         else:
-            print >> sys.stderr, "Change filename to dell_fans or dell_temps."
+            print >> sys.stderr, "Change filename to openmanage_fans / openmanage_temps / openmanage_power."
             sys.exit(1)
     except (OSError, ValueError), e:
         # omreport returns 0 results if OMSA services aren't started.
