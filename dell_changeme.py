@@ -50,7 +50,8 @@ class Statistics(object):
         self.count = 0
         # Make sure omreport returns at least one sensor block.
         for item in self.data:
-            if item.startswith("Probe Name") or item.startswith("Reading"):
+            if (item.startswith("Probe Name") or item.startswith("Reading")
+               or item.startswith("Statistic") or item.startswith("Location")):
                 self.count += 1
         if self.count < 2:
             raise ValueError("No output from omreport. Is OMSA running?")
@@ -69,10 +70,28 @@ class Statistics(object):
         """Prints Munin config data with "label" values from omreport data."""
         self.name = []
         for item in self.data:
-            if "Probe Name" in item:
+            if (item.startswith("Probe Name") or item.startswith("Statistic")
+               or item.startswith("Location")):
                 self.name.append(item.split(":")[1].replace("RPM","").strip())
         for index, item in enumerate(self.name):
             print "%s_%s.label %s" % (self.command[-1], index, item)
+
+
+class PowerConsumption(Statistics):
+    """A subclass that includes the Munin "config" output."""
+
+    def __init__(self, command):
+        Statistics.__init__(self, command)
+
+    def print_config(self):
+        print "graph_title Dell Power Consumption Information"
+        print "graph_args --base 1000 -l 0"
+        print "graph_vlabel Energy (W / KWh / A)"
+        print "graph_category Chassis"
+        print "graph_info This graph shows the system's overall power consumption."
+        print "graph_period second"
+        # Print remaining non-static values.
+        self.print_config_dynamic()
 
 
 class FanSpeed(Statistics):
@@ -117,6 +136,9 @@ if __name__ == '__main__':
         elif "temps" in sys.argv[0]:
             cmd = "/usr/bin/omreport chassis temps"
             omdata = ChassisTemps(cmd)
+        elif "power" in sys.argv[0]:
+            cmd = "/usr/bin/omreport chassis pwrmonitoring"
+            omdata = PowerConsumption(cmd)
         else:
             print >> sys.stderr, "Change filename to dell_fans or dell_temps."
             sys.exit(1)
