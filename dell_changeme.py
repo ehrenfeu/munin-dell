@@ -70,9 +70,18 @@ class Statistics(object):
         """Prints Munin config data with "label" values from omreport data."""
         self.name = []
         for item in self.data:
-            if (item.startswith("Probe Name") or item.startswith("Statistic")
-               or item.startswith("Location")):
+            if ("Probe Name" in item and not "System Board System Level" in item):
                 self.name.append(item.split(":")[1].replace("RPM","").strip())
+            if ("System Board System Level" in item):
+                self.name.append('System Power Consumption (Watts)')
+            if ("Current" in item) and ("PS" in item):
+                self.name.append(item.split(":")[1].strip() + ' (Amps)')
+            if "Energy Consumption" in item:
+                 self.name.append(item.split(":")[1].strip() + ' (KWh)')
+            if "System Peak Power" in item:
+                 self.name.append(item.split(":")[1].strip() + ' (Watts)')
+            if "System Peak Amperage" in item:
+                 self.name.append(item.split(":")[1].strip() + ' (Amps)')
         for index, item in enumerate(self.name):
             print "%s_%s.label %s" % (self.command[-1], index, item)
 
