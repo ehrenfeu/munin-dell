@@ -1,0 +1,35 @@
+dell_changeme.py
+
+
+USAGE
+
+    dell_changeme [config] [autoconfig]
+
+    Copy script to two files: dell_fans and dell_temps.
+    Example: cat dell_changeme | tee dell_fans > dell_temps
+
+DESCRIPTION
+
+    A Munin plugin to graph the fan speeds and chassis temperatures of Dell
+    hardware. Requires Dell's OpenManage software, specifically omreport. OMSA
+    services must be started prior to plugins use. Script expects omreport to
+    be in /usr/sbin/, you may need to add a symlink.
+
+    omreport accesses the proc filesystem and as such this plugin must be ran
+    as root. Alternatively, you could modify script to use sudoers, or setuid.
+
+    To run script as root add the following lines to munin's plugin-conf.d dir.
+
+    [dell*]
+    user root
+    group root
+
+    Troubleshooting info: http://www.ryanbowlby.com/infotech/munin-plugin-dell/
+
+AUTHOR
+
+    Ryan Bowlby <rbowlby83 yahoo>
+
+LICENSE
+
+    This script is in the public domain, free from copyrights or restrictions.
