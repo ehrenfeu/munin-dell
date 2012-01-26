@@ -138,15 +138,16 @@ class ChassisTemps(Statistics):
 
 
 if __name__ == '__main__':
+    omreport = '/usr/sbin/omreport'
     try:
         if "fans" in sys.argv[0]:
-            cmd = "/usr/bin/omreport chassis fans"
+            cmd = omreport + " chassis fans"
             omdata = FanSpeed(cmd)
         elif "temps" in sys.argv[0]:
-            cmd = "/usr/bin/omreport chassis temps"
+            cmd = omreport + " chassis temps"
             omdata = ChassisTemps(cmd)
         elif "power" in sys.argv[0]:
-            cmd = "/usr/bin/omreport chassis pwrmonitoring"
+            cmd = omreport + " chassis pwrmonitoring"
             omdata = PowerConsumption(cmd)
         else:
             print >> sys.stderr, "Change filename to openmanage_fans / openmanage_temps / openmanage_power."
